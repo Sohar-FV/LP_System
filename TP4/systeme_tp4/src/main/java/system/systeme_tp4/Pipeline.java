@@ -34,7 +34,7 @@ public class Pipeline {
 
         (new Listener(out)).start();// Affichage des résultats de la dernière Queue
 
-        first.add(7);
+        first.add(new Result(7));
                 try {
                     Thread.sleep(3000);
 
@@ -42,14 +42,15 @@ public class Pipeline {
                     Logger.getLogger(Pipeline.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-
-        first.add(2);
+        first.add(new Result(2));
                 try {
                     Thread.sleep(3000);
 
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Pipeline.class.getName()).log(Level.SEVERE, null, ex);
                 } 
+                
+        first.add(new Result(-1));
 
     }
 }

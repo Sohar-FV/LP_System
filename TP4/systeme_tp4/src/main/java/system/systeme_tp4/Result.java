@@ -5,10 +5,32 @@
  */
 package system.systeme_tp4;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author flvivet
  */
 public class Result {
+    
+    private List<Integer> valueHistory;
+
+    public Result(Integer initialValue) {
+        this.valueHistory = new ArrayList<>();
+        this.valueHistory.add(initialValue);
+    }
+
+    public Integer getValue() {
+        return this.valueHistory.get(this.valueHistory.size()-1);
+    }
+
+    public List<Integer> getValueHistory() {
+        return valueHistory;
+    }
+    
+    
+    
+    
     
 }

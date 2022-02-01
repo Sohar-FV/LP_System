@@ -6,7 +6,6 @@
 package system.systeme_tp4;
 
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -14,8 +13,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class Stage extends Thread{
     
-    private ArrayBlockingQueue<Integer> in;
-    private ArrayBlockingQueue<Integer> out;
+    private ArrayBlockingQueue<Result> in;
+    private ArrayBlockingQueue<Result> out;
     private int number;
 
     public Stage(ArrayBlockingQueue in, ArrayBlockingQueue out, int number) {
@@ -28,18 +27,25 @@ public class Stage extends Thread{
 
     @Override
     public void run() {
-        while(true){
+        boolean continuer = true;
+        while(continuer){
             try {
                 
-                Integer value;
-                value = this.in.poll(5000, TimeUnit.MILLISECONDS);
+                Result result;
+                result = this.in.take();
                 
-                if (value == null){
-                    return;
-                }
+                if (result.getValue() == -1){
+                    continuer = false;
+                } else {  
+                    Work.work(this.number, result);
+                    /* Avant les works :
+                    Integer i = result.getValue();
+                    i++;
+                    result.getValueHistory().add(i);
+                    */
+                }                          
+                this.out.put(result);
                 
-                value++;
-                this.out.put(value);
             } catch (InterruptedException ex) {
                 System.out.println("L'étage " + this.number + "a été interrompu");
             }

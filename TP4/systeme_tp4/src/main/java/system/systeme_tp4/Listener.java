@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Listener extends Thread{
     
-    private BlockingQueue<Integer> b;
+    private BlockingQueue<Result> b;
 
     public Listener(BlockingQueue b) {
         this.b = b;
@@ -22,16 +22,18 @@ public class Listener extends Thread{
 
     @Override
     public void run() {
-        while(true){
+        boolean continuer = true;
+        while(continuer){
             try {
-                Integer value;
-                value = this.b.poll(5000, TimeUnit.MILLISECONDS);
+                Result result;
+                result = this.b.take();
                 
-                if (value == null){
-                    return;
+                if (result.getValue() == -1){
+                    continuer = false;
+                } else {
+                    System.out.println("resultat :" +result.getValueHistory());
                 }
                 
-                System.out.println("resultat :" +value);
             } catch (InterruptedException ex) {
                 System.out.println("Le listener a été interrompu");
             }
